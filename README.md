@@ -32,7 +32,7 @@ Unlike many tutorials that teach you how to achieve this goal, this repository i
 
 Clone this repo
 
-    git clone https://github.com/laravel/breeze.git
+    git clone https://github.com/mitchel21/lead_test.git
 
 Create env file and set up your DB connection
 
