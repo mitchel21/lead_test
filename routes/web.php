@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [SiteController::class, 'index'])
     ->name('index');
+Route::get('/grazie', function () {
+    return view('grazie');
+})->name('concorso');
 Route::post('/post', [PostController::class, 'store'])
     ->name('post');
 

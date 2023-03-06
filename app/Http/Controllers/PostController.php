@@ -21,7 +21,7 @@ class PostController extends Controller
         $post->city_id = $request['city'];
         $post->request = $request['request'];
         $post->save();
-        return view('grazie');
+        return  redirect('grazie');
     }
 
     protected function requestValidate($request)

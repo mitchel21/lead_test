@@ -13,7 +13,7 @@
     <section class="container vh-100">
             <div class="row vh-100 justify-content-center align-items-center">
                 <div class="col-md-8">
-                    <h1 class="mb-4">Grazie</h1>
+                    <h1 class="mb-4">Grazie della tua richiesta</h1>
                 </div>
             </div>
     </section>

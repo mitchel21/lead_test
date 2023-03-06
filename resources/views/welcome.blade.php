@@ -142,7 +142,11 @@
                 },
                 dataType: 'json',
                 success: function (res) {
-                    $('#city').removeAttr('disabled');
+                    if ($('#city').prop('disabled')) {
+                        $('#city').removeAttr('disabled');
+                    }
+
+                    $('#city').html('<option value="">Seleziona...</option>');
                     $.each(res.cities, function (key, value) {
                         $("#city").append('<option value="' + value
                             .id + '">' + value.name + '</option>');
