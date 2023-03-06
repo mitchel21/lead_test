@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\SiteController::class, 'index'])
+Route::get('/', [SiteController::class, 'index'])
     ->name('index');
+Route::post('/post', [PostController::class, 'store'])
+    ->name('post');
 
-require __DIR__.'/auth.php';
+/*Rotte user non disabilitate*/
+/*require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -26,4 +31,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('profile', [\App\Http\Controllers\SiteController::class, 'profile'])
         ->middleware('password.confirm')
         ->name('profile');
-});
+});*/
