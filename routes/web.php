@@ -19,7 +19,7 @@ Route::get('/', [SiteController::class, 'index'])
     ->name('index');
 Route::get('/grazie', function () {
     return view('grazie');
-})->name('concorso');
+})->name('grazie');
 Route::post('/post', [PostController::class, 'store'])
     ->name('post');
 

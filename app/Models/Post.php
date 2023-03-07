@@ -25,10 +25,10 @@ class Post extends Model
 
     public function province()
     {
-        return $this->hasOne('App\Models\Province');
+        return $this->hasOne('App\Models\Province', 'id', 'province_id');
     }
-//    public function comune()
-//    {
-//        return $this->hasOne('App\Models\Comuni');
-//    }
+    public function city()
+    {
+        return $this->hasOne('App\Models\City', 'id', 'city_id');
+    }
 }

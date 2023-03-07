@@ -14,6 +14,7 @@
             <div class="row vh-100 justify-content-center align-items-center">
                 <div class="col-md-8">
                     <h1 class="mb-4">Grazie della tua richiesta</h1>
+                    <a class="btn btn-primary" href="{{route('index')}}">Torna</a>
                 </div>
             </div>
     </section>
