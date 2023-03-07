@@ -35,4 +35,14 @@ class PostController extends Controller
             'request' => 'required|max:250',
         ]);
     }
+
+    public function viewLead($data)
+    {
+        /*Trova Lead*/
+        $post = Post::find($data);
+
+        return view('admin.viewLead')->with([
+            'post' => $post
+        ]);
+    }
 }

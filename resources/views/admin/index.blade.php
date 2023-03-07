@@ -18,19 +18,21 @@
                                     <th>N°</th>
                                     <th>Nome</th>
                                     <th>Cognome</th>
-                                    <th>Dettaglio</th>
-                                    <th></th>
+                                    <th class="text-end">Dettaglio</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($posts as $post)
                                     <tr>
 
+                                        <td >{{ $loop->iteration }}</td>
                                         <td >{{$post->name}}</td>
                                         <td >{{$post->surname}}</td>
-                                        <td >{{$post->province->name}}</td>
-                                        <td >{{$post->city->name}}</td>
-                                        {{--<td><a href="{{route('account.user',['user'=>$user])}}" class="btn btn-sm btn-fill-4">Visualizza</a></td>--}}
+                                        {{--<td >{{$post->province->name}}</td>
+                                        <td >{{$post->city->name}}</td>--}}
+                                        <td class="text-end">
+                                            <a href="{{route('viewLead',['post'=>$post])}}" class="btn btn-primary">Visualizza dettaglio</a>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
