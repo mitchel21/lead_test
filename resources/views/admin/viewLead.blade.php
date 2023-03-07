@@ -23,6 +23,9 @@
                             <strong class="fw-bold">Provincia: {{$post->province->name}}</strong></li>
                         <li class="list-group-item">
                             <strong class="fw-bold">Comune: {{$post->city->name}}</strong></li>
+                        <li class="list-group-item">
+                            <strong class="fw-bold">Richiesta: {{$post->request}}</strong>
+                        </li>
                     </ul>
                     <a class="btn btn-primary" href="{{route('admin.index')}}">Torna all'elenco delle lead </a>
                 </div>
