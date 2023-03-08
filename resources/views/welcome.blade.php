@@ -17,14 +17,14 @@
 <body class="vh-100">
 <section class="container vh-100">
     <div class="row vh-100 justify-content-center align-items-center">
-        <div class="col-md-6">
+        <div class="col-md-8 col-xl-6">
             <h1 class="mb-4">Invia la tua richiesta</h1>
             <form action="{{route('post')}}" id="postForm" method="POST">
                 @csrf
                 <div class="row mb-3">
-                    <label for="name" class="col-sm-3 col-form-label">Nome</label>
+                    <label for="name" class="col-sm-3 col-form-label">Nome*</label>
                     <div class="col-sm-9">
-                        <input type="text" placeholder="Nome" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" requiredd autofocus >
+                        <input type="text" placeholder="Nome" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete autofocus >
                         @error('name')
                         <span class="invalid-feedback" role="alert">
                                   <strong>{{ $message }}</strong>
@@ -33,9 +33,9 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="surname" class="col-sm-3 col-form-label">Cognome</label>
+                    <label for="surname" class="col-sm-3 col-form-label">Cognome*</label>
                     <div class="col-sm-9">
-                        <input type="text" placeholder="Cognome" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname') }}" requiredd autofocus >
+                        <input type="text" placeholder="Cognome" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname') }}" required autocomplete autofocus >
                         @error('surname')
                         <span class="invalid-feedback" role="alert">
                                   <strong>{{ $message }}</strong>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="date_of_birth" class="col-sm-3 col-form-label">Data di nascita</label>
+                    <label for="date_of_birth" class="col-sm-3 col-form-label">Data di nascita*</label>
                     <div class="col-sm-9">
                         <input id="date_of_birth"
                                class="form-control @error('date_of_birth') is-invalid @enderror"
@@ -53,7 +53,7 @@
                                onblur="(this.value == '' ? this.type='text' : this.type='date')"--}}
                                name="date_of_birth"
                                value="{{ old('date_of_birth')}}"
-                               {{--placeholder="Data di nascita"--}} requiredd autocomplete autofocus />
+                               {{--placeholder="Data di nascita"--}} required autocomplete autofocus />
                         @error('date_of_birth')
                         <div class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -64,10 +64,10 @@
 
 
                 <div class="row mb-3">
-                    <label for="province" class="col-sm-3 col-form-label">Provincia</label>
+                    <label for="province" class="col-sm-3 col-form-label">Provincia*</label>
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <select class="form-control @error('province') is-invalid @enderror" id="province" name="province" value="{{ old('province') }}" requiredd focus>
+                            <select class="form-control @error('province') is-invalid @enderror" id="province" name="province" value="{{ old('province') }}" required autocomplete focus>
                                 <option value="">Seleziona...</option>
                                 @foreach ($provinces as $province)
                                     <option value="{{$province->id}}" {{ old('province')==$province->id ? 'selected' : ''}}>{{$province->name}}</option>
@@ -83,10 +83,10 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="city" class="col-sm-3 col-form-label">Comune</label>
+                    <label for="city" class="col-sm-3 col-form-label">Comune*</label>
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <select class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('ctiy') }}" data-oldid="{{ old('city')}}" {{ old('city') ? '' : 'disabled'}} requiredd focus>
+                            <select class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('ctiy') }}" data-oldid="{{ old('city')}}" {{ old('city') ? '' : 'disabled'}} required autocomplete focus>
                                 <option value="">Seleziona...</option>
                                 @isset($cities)
                                     @foreach ($cities as $city)
@@ -103,9 +103,9 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="request" class="col-sm-3 col-form-label">Richiesta</label>
+                    <label for="request" class="col-sm-3 col-form-label">Richiesta*</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control @error('request') is-invalid @enderror" name="request" placeholder="Scrivi la tua richiesta"  autofocus requireddd>{{ old('request') }}</textarea>
+                        <textarea class="form-control @error('request') is-invalid @enderror" name="request" placeholder="Scrivi la tua richiesta" autofocus autocomplete required>{{ old('request') }}</textarea>
                         @error('request')
                         <div class="invalid-feedback">
                             <strong>{{ $message }}</strong>
@@ -172,17 +172,18 @@
                     });
                     // Riassegna solo quando c'è un errore nel form
                     @if ($errors->any())
-                        if ($("#city").data('oldid') != '' && typeof ($("#city").data('oldid')) != "undefined") {
-                            $('#city').val($("#city").data('oldid'));
-                            $("#city").data('oldid', '');
-                        }
-                    @endif
+                    if ($("#city").data('oldid') != '' && typeof ($("#city").data('oldid')) != "undefined") {
+                        $('#city').val($("#city").data('oldid'));
+                        $("#city").data('oldid', '');
                     }
+                    @endif
+                }
             })
         }
         else{
-            // se selezionato elimina option e disabilita
-            $('#city').val('').prop("disabled", true);
+            // se selezionato elimina le option e disabilita city
+            $('#city').val('').prop("disabled", true).html('<option value="">Seleziona...</option>');
+
         }
     });
 </script>
