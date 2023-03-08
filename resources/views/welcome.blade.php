@@ -5,8 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Invia Richiesta </title>
+
+    <!-- BS 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <!-- Styles -->
+
+    <!-- SELECT2 + BS5 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
 </head>
 <body class="vh-100">
@@ -65,7 +70,7 @@
                             <select class="form-control @error('province') is-invalid @enderror" id="province" name="province" value="{{ old('province') }}" requiredd focus>
                                 <option value="">Seleziona...</option>
                                 @foreach ($provinces as $province)
-                                    <option value="{{$province->id}}">{{$province->name}}</option>
+                                    <option value="{{$province->id}}" {{ old('province')==$province->id ? 'selected' : ''}}>{{$province->name}}</option>
                                 @endforeach
                             </select>
                             @error('province')
@@ -81,7 +86,7 @@
                     <label for="city" class="col-sm-3 col-form-label">Comune</label>
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <select class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('ctiy') }}" disabled requiredd focus>
+                            <select class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('ctiy') }}" data-oldid="{{ old('city')}}" {{ old('city') ? '' : 'disabled'}} requiredd focus>
                                 <option value="">Seleziona...</option>
                                 @isset($cities)
                                     @foreach ($cities as $city)
@@ -126,13 +131,27 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-        /*Chimata ajax selezione Provincia*/
-        /*Seleziona valore dropdown*/
-        $('#province').on('change', function () {
-            var province_id = this.value;
+<script>
+
+    $(document).ready(function($){
+        $('#province').select2( {
+            theme: 'bootstrap-5'
+        });
+        $('#city').select2( {
+            theme: 'bootstrap-5'
+        });
+        if($("#city").data('oldid')!='' && typeof($("#city").data('oldid'))!="undefined"){
+            $("#province").change();
+        }
+    });
+
+    $("#province").change(function() {
+        var province_id = this.value;
+
+        if(province_id.trim() != '')
+        {
             $.ajax({
                 url: "{{url('api/fetch-cities')}}",
                 type: "POST",
@@ -151,10 +170,20 @@
                         $("#city").append('<option value="' + value
                             .id + '">' + value.name + '</option>');
                     });
-                }
-            });
-        });
-
+                    // Riassegna solo quando c'è un errore nel form
+                    @if ($errors->any())
+                        if ($("#city").data('oldid') != '' && typeof ($("#city").data('oldid')) != "undefined") {
+                            $('#city').val($("#city").data('oldid'));
+                            $("#city").data('oldid', '');
+                        }
+                    @endif
+                    }
+            })
+        }
+        else{
+            // se selezionato elimina option e disabilita
+            $('#city').val('').prop("disabled", true);
+        }
     });
 </script>
 </body>

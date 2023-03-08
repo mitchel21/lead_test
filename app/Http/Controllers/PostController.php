@@ -14,7 +14,7 @@ class PostController extends Controller
         /*Validazione della Lead*/
         $this->requestValidate($request);
         //Salva Lead
-        $post->name = $request['name'];
+        $post->name = $request->name;
         $post->surname = $request['surname'];
         $post->date_of_birth = $request['date_of_birth'];
         $post->province_id = $request['province'];

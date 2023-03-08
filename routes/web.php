@@ -20,8 +20,11 @@ Route::get('/', [SiteController::class, 'index'])
 Route::get('/grazie', function () {
     return view('grazie');
 })->name('grazie');
-Route::post('/post', [PostController::class, 'store'])
-    ->name('post');
+
+/*Middleware Sanifica i doppi tag*/
+Route::middleware('XSS')->group(function () {
+    Route::post('/post', [PostController::class, 'store'])->name('post');
+});
 
 /*Rotte user non disabilitate*/
 /*require __DIR__.'/auth.php';

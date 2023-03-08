@@ -18,16 +18,15 @@
                                     <th>N°</th>
                                     <th>Nome</th>
                                     <th>Cognome</th>
-                                    <th class="text-end">Dettaglio</th>
+                                    <th class="text-end">Visualizza dettaglio</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($posts as $post)
                                     <tr>
-
-                                        <td >{{ $loop->iteration }}</td>
-                                        <td >{{$post->name}}</td>
-                                        <td >{{$post->surname}}</td>
+                                        <td class="align-middle">{{ $loop->iteration }}</td>
+                                        <td class="align-middle">{{$post->name}}</td>
+                                        <td class="align-middle">{{$post->surname}}</td>
                                         {{--<td >{{$post->province->name}}</td>
                                         <td >{{$post->city->name}}</td>--}}
                                         <td class="text-end">
