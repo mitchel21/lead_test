@@ -1,34 +1,4 @@
-<p align="center">
-<a href="https://github.com/rubensrocha/laravel-breeze-multi-auth-admin/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/rubensrocha/laravel-breeze-multi-auth-admin"></a>
-<a href="https://github.com/rubensrocha/laravel-breeze-multi-auth-admin/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/rubensrocha/laravel-breeze-multi-auth-admin"></a>
-<a href="https://packagist.org/packages/rubensrocha/laravel-breeze-multi-auth-admin"><img src="https://img.shields.io/packagist/dt/rubensrocha/laravel-breeze-multi-auth-admin" alt="Total Downloads"></a>
-<a href="https://github.com/rubensrocha/laravel-breeze-multi-auth-admin/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/rubensrocha/laravel-breeze-multi-auth-admin"></a>
-</p>
-
-## About This Repository
-
-This is a repository created to serve as a basis for those who intend to create a Laravel project using Breeze with multiple guards/auth, where it is possible to create a website and an admin panel with separate authentication for each one.
-
-Unlike many tutorials that teach you how to achieve this goal, this repository is in fact complete and has all the basic functional functions in the admin panel.
-
-### Site(User)
-- Register
-- Login
-- Logout
-- Forgot Password
-- Reset Password
-- Confirm Password
-- Verify Email
-
-### Admin
-- Login with email or username
-- Logout
-- Forgot Password
-- Reset Password
-- Confirm Password
-- Verify Email
-
-## Installation
+<h1>Form + Backend Lead</h1>
 
 Clone this repo
 
@@ -37,24 +7,29 @@ Clone this repo
 Create env file and set up your DB connection
 
     cp .env.example .env
+    
+    
+Install packages
+
+    composer install
+
 
 Generate key
 
     php artisan key:generate
 
-Install packages
 
-    composer install
-
-Run migrations without admins/users
-
-    php artisan migrate
-
-Or run migrations with admins/users
+Run migrations + seed
 
     php artisan migrate --seed
 
-Default password for admin and users is "password"
+Admin login è /admin/login
+
+Default mail per l'admin è "admin@mail.it"
+
+Default password per l'admin è "password"
+
+
 
 ## References
 - [Laravel 9](https://laravel.com)
