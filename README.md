@@ -22,6 +22,13 @@ Generate key
 Run migrations + seed
 
     php artisan migrate --seed
+    
+    
+Run server
+
+    php artisan serve
+    
+    
 
 Admin login è /admin/login
 
