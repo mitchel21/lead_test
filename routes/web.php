@@ -26,15 +26,3 @@ Route::middleware('XSS')->group(function () {
     Route::post('/post', [PostController::class, 'store'])->name('post');
 });
 
-/*Rotte user non disabilitate*/
-/*require __DIR__.'/auth.php';
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    Route::get('profile', [\App\Http\Controllers\SiteController::class, 'profile'])
-        ->middleware('password.confirm')
-        ->name('profile');
-});*/

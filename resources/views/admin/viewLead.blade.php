@@ -1,7 +1,7 @@
 <x-admin-layout>
     <x-slot name="header">
         <h2 class="font-bold text-xl text-gray-800 leading-tight">
-            {{ __('Visualizza dettagli') }}
+            {{ __('Dettagli richiesta') }}
         </h2>
     </x-slot>
 
