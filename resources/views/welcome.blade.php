@@ -64,29 +64,48 @@
 
 
                 <div class="row mb-3">
+                    <label for="region" class="col-sm-3 col-form-label">Regione*</label>
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <select class="form-control @error('region') is-invalid @enderror" id="region" name="region" value="{{ old('region') }}" required autocomplete="off" autofocus>
+                                <option value="">Seleziona...</option>
+                                @foreach ($regions as $region)
+                                    <option value="{{$region->id}}" {{ old('region')==$region->id ? 'selected' : ''}}>{{$region->name}}</option>
+                                @endforeach
+                            </select>
+                            @error('region')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <label for="province" class="col-sm-3 col-form-label">Provincia*</label>
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <select class="form-control @error('province') is-invalid @enderror" id="province" name="province" value="{{ old('province') }}" required autocomplete focus>
+                            <select class="form-control @error('province') is-invalid @enderror" id="province" name="province" value="{{ old('province') }}" data-oldid="{{ old('province')}}" {{ old('province') ? '' : 'disabled'}} required autocomplete="off">
                                 <option value="">Seleziona...</option>
-                                @foreach ($provinces as $province)
-                                    <option value="{{$province->id}}" {{ old('province')==$province->id ? 'selected' : ''}}>{{$province->name}}</option>
-                                @endforeach
+                                @isset($provinces)
+                                    @foreach ($provinces as $province)
+                                        <option value="{{$province->id}}" {{ old('province')==$province->id ? 'selected' : ''}}>{{$province->name}}</option>
+                                    @endforeach
+                                @endisset
                             </select>
                             @error('province')
                             <span class="invalid-feedback" role="alert">
-                                      <strong>{{ $message }}</strong>
-                                    </span>
+                                <strong>{{ $message }}</strong>
+                            </span>
                             @enderror
                         </div>
-
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="city" class="col-sm-3 col-form-label">Comune*</label>
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <select class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('ctiy') }}" data-oldid="{{ old('city')}}" {{ old('city') ? '' : 'disabled'}} required autocomplete focus>
+                            <select class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('ctiy') }}" data-oldid="{{ old('city')}}" {{ old('city') ? '' : 'disabled'}} required autocomplete="off">
                                 <option value="">Seleziona...</option>
                                 @isset($cities)
                                     @foreach ($cities as $city)
@@ -96,12 +115,13 @@
                             </select>
                             @error('city')
                             <span class="invalid-feedback" role="alert">
-                                      <strong>{{ $message }}</strong>
-                                    </span>
+                                <strong>{{ $message }}</strong>
+                            </span>
                             @enderror
                         </div>
                     </div>
                 </div>
+
                 <div class="row mb-3">
                     <label for="request" class="col-sm-3 col-form-label">Richiesta*</label>
                     <div class="col-sm-9">
@@ -135,57 +155,123 @@
 
 <script>
 
-    $(document).ready(function($){
-        $('#province').select2( {
+    $(document).ready(function() {
+        $('#region,#province, #city').select2({
             theme: 'bootstrap-5'
         });
-        $('#city').select2( {
-            theme: 'bootstrap-5'
+
+        // Aggiungi la logica per tenere traccia dell'oldid
+        $('#province, #city').on('select2:select', function(e) {
+            $(this).data('oldid', e.params.data.id);
         });
-        if($("#city").data('oldid')!='' && typeof($("#city").data('oldid'))!="undefined"){
-            $("#province").change();
+
+        if($('#province, #city').data('oldid')!='' && typeof($('#province, #city').data('oldid'))!="undefined"){
+            $('#province, #city').change();
         }
+
+        $('#region').change(function() {
+            var region_id = $(this).val();
+
+            // Reset provincia e città
+            $('#province').val('').trigger('change').prop('disabled', true);
+            $('#city').val('').trigger('change').prop('disabled', true);
+
+            if(region_id) {
+                // Carica le province
+                $.ajax({
+                    url: "{{url('api/fetch-provinces')}}",
+                    type: "POST",
+                    data: {
+                        region_id: region_id,
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        $('#province').html('<option value="">Seleziona...</option>');
+                        $.each(res.provinces, function (key, value) {
+                            $("#province").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+
+                        // Abilita la selezione della provincia
+                        $('#province').prop('disabled', false);
+
+                        // Riassegna solo quando c'è un errore nel form
+                        @if ($errors->any())
+                        if ($("#province").data('oldid') != '' && typeof ($("#province").data('oldid')) != "undefined") {
+                            $('#province').val($("#province").data('oldid')).trigger('change');
+                            $("#province").data('oldid', '');
+                        }
+                        @endif
+                    }
+                });
+            }
+            if(region_id.trim() != '') {
+                // Carica le province
+                $.ajax({
+                    url: "{{url('api/fetch-provinces')}}",
+                    type: "POST",
+                    data: {
+                        region_id: region_id,
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        $('#province').html('<option value="">Seleziona...</option>');
+                        $.each(res.provinces, function (key, value) {
+                            $("#province").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+
+                        // Abilita la selezione della provincia
+                        $('#province').prop('disabled', false);
+
+                        // Riassegna solo quando c'è un errore nel form
+                        @if ($errors->any())
+                        if ($("#province").data('oldid') != '' && typeof ($("#province").data('oldid')) != "undefined") {
+                            $('#province').val($("#province").data('oldid'));
+                            $("#province").data('oldid', '');
+                        }
+                        @endif
+                    }
+                });
+            }
+
+        });
+
+        $('#province').change(function() {
+            var province_id = $(this).val();
+
+            // Reset città
+            $('#city').val('').trigger('change').prop('disabled', true);
+
+            if(province_id.trim() != '') {
+                // Carica le città
+                $.ajax({
+                    url: "{{url('api/fetch-cities')}}",
+                    type: "POST",
+                    data: {
+                        province_id: province_id,
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        $('#city').html('<option value="">Seleziona...</option>');
+                        $.each(res.cities, function (key, value) {
+                            $("#city").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+
+                        // Abilita la selezione della città
+                        $('#city').prop('disabled', false);
+
+                        // Riassegna solo quando c'è un errore nel form
+                        @if ($errors->any())
+                        if ($("#city").data('oldid') != '' && typeof ($("#city").data('oldid')) != "undefined") {
+                            $('#city').val($("#city").data('oldid'));
+                            $("#city").data('oldid', '');
+                        }
+                        @endif
+                    }
+                });
+            }
+        });
     });
 
-    $("#province").change(function() {
-        var province_id = this.value;
-
-        if(province_id.trim() != '')
-        {
-            $.ajax({
-                url: "{{url('api/fetch-cities')}}",
-                type: "POST",
-                data: {
-                    province_id: province_id,
-                    _token: '{{csrf_token()}}'
-                },
-                dataType: 'json',
-                success: function (res) {
-                    if ($('#city').prop('disabled')) {
-                        $('#city').removeAttr('disabled');
-                    }
-
-                    $('#city').html('<option value="">Seleziona...</option>');
-                    $.each(res.cities, function (key, value) {
-                        $("#city").append('<option value="' + value
-                            .id + '">' + value.name + '</option>');
-                    });
-                    // Riassegna solo quando c'è un errore nel form
-                    @if ($errors->any())
-                    if ($("#city").data('oldid') != '' && typeof ($("#city").data('oldid')) != "undefined") {
-                        $('#city').val($("#city").data('oldid'));
-                        $("#city").data('oldid', '');
-                    }
-                    @endif
-                }
-            })
-        }
-        else{
-            // se selezionato elimina le option e disabilita city
-            $('#city').val('').prop("disabled", true).html('<option value="">Seleziona...</option>');
-
-        }
-    });
 </script>
 </body>
 </html>

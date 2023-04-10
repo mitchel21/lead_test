@@ -29,7 +29,7 @@ class PostController extends Controller
         return $request->validate([
             'name' => 'required|min:3',
             'surname' => 'required|min:3',
-            'date_of_birth' => 'required',
+            'date_of_birth' => 'required|before:13 years ago',
             'province' => 'required',
             'city' => 'required',
             'request' => 'required|max:250',

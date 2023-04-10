@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Province;
+use App\Models\Region;
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
@@ -11,10 +12,10 @@ class SiteController extends Controller
     public function index()
     {
         /*Seleziono le due provincie*/
-        $provinces = Province::where('name', 'Lodi')->orWhere('name', 'Milano')->get();
+        $regions = Region::all();
 
 
-        return view('welcome', compact('provinces'));
+        return view('welcome', compact('regions'));
     }
 
     public function profile()
