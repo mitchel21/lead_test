@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('province')->with('city')->get();
+        $posts = Post::with('city.province.region')->get();
         return view('admin.index', compact('posts'));
     }
 

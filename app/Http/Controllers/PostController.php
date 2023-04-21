@@ -17,7 +17,6 @@ class PostController extends Controller
         $post->name = $request->name;
         $post->surname = $request['surname'];
         $post->date_of_birth = $request['date_of_birth'];
-        $post->province_id = $request['province'];
         $post->city_id = $request['city'];
         $post->request = $request['request'];
         $post->save();

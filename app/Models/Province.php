@@ -9,9 +9,13 @@ class Province extends Model
 {
     use HasFactory;
 
-    //pivot
-    public function posts()
+    public function region()
     {
-        return $this->belongsToMany('App\Models\Post');
+        return $this->belongsTo(Region::class, 'region_id');
+    }
+
+    public function city()
+    {
+        return $this->hasMany(City::class, 'province_id');
     }
 }

@@ -105,7 +105,7 @@
                     <label for="city" class="col-sm-3 col-form-label">Comune*</label>
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <select class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('ctiy') }}" data-oldid="{{ old('city')}}" {{ old('city') ? '' : 'disabled'}} required autocomplete="off">
+                            <select class="form-control @error('city') is-invalid @enderror" id="city" name="city" value="{{ old('$city') }}" data-oldid="{{ old('city')}}" {{ old('city') ? '' : 'disabled'}} required autocomplete="off">
                                 <option value="">Seleziona...</option>
                                 @isset($cities)
                                     @foreach ($cities as $city)
@@ -157,53 +157,27 @@
 
     $(document).ready(function() {
         $('#region,#province, #city').select2({
-            theme: 'bootstrap-5'
+            theme: 'bootstrap-5',
+            width: '100%',
         });
 
         // Aggiungi la logica per tenere traccia dell'oldid
-        $('#province, #city').on('select2:select', function(e) {
+        /*$('#province, #city').on('select2:select', function(e) {
             $(this).data('oldid', e.params.data.id);
-        });
+        });*/
 
-        if($('#province, #city').data('oldid')!='' && typeof($('#province, #city').data('oldid'))!="undefined"){
-            $('#province, #city').change();
+        if($('#province').data('oldid')!='' && typeof($('#province').data('oldid'))!="undefined"){
+            $('#region').change();
         }
 
+    });
         $('#region').change(function() {
             var region_id = $(this).val();
 
             // Reset provincia e città
             $('#province').val('').trigger('change').prop('disabled', true);
-            $('#city').val('').trigger('change').prop('disabled', true);
+            /*$('#city').val('').trigger('change').prop('disabled', true);*/
 
-            if(region_id) {
-                // Carica le province
-                $.ajax({
-                    url: "{{url('api/fetch-provinces')}}",
-                    type: "POST",
-                    data: {
-                        region_id: region_id,
-                    },
-                    dataType: 'json',
-                    success: function (res) {
-                        $('#province').html('<option value="">Seleziona...</option>');
-                        $.each(res.provinces, function (key, value) {
-                            $("#province").append('<option value="' + value.id + '">' + value.name + '</option>');
-                        });
-
-                        // Abilita la selezione della provincia
-                        $('#province').prop('disabled', false);
-
-                        // Riassegna solo quando c'è un errore nel form
-                        @if ($errors->any())
-                        if ($("#province").data('oldid') != '' && typeof ($("#province").data('oldid')) != "undefined") {
-                            $('#province').val($("#province").data('oldid')).trigger('change');
-                            $("#province").data('oldid', '');
-                        }
-                        @endif
-                    }
-                });
-            }
             if(region_id.trim() != '') {
                 // Carica le province
                 $.ajax({
@@ -227,6 +201,11 @@
                         if ($("#province").data('oldid') != '' && typeof ($("#province").data('oldid')) != "undefined") {
                             $('#province').val($("#province").data('oldid'));
                             $("#province").data('oldid', '');
+                        }
+
+                        // Se è stata selezionata anche la città
+                        if ($("#city").data('oldid') != '' && typeof ($("#city").data('oldid')) != "undefined") {
+                            $('#province').change();
                         }
                         @endif
                     }
@@ -270,7 +249,7 @@
                 });
             }
         });
-    });
+
 
 </script>
 </body>
